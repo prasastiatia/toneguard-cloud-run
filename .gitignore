@@ -1,0 +1,36 @@
+# ============================================================================
+# ToneGuard — Strict Whitelist .gitignore
+# Ensures ONLY README.md + Application Code Files are uploaded to GitHub.
+# All local videos, pitch decks, summaries, and helper scripts are ignored.
+# ============================================================================
+
+# 1. Ignore everything by default
+*
+
+# 2. Explicitly allow ONLY README.md & Core Application Code Files
+!.gitignore
+!.dockerignore
+!Dockerfile
+!README.md
+!package.json
+!server.js
+!index.html
+!pitch-deck.html
+!manifest.json
+!sw.js
+
+# Allow CSS and JS source directories & their code files
+!css/
+!css/style.css
+!js/
+!js/app.js
+!js/worker.js
+!js/pitch-deck.js
+
+# 3. Never upload secrets, environment files, or OS temp files
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db
+

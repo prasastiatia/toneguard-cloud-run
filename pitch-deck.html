@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToneGuard — Presentation Deck (Product Vision, Architecture, Market, Business &amp; Roadmap)</title>
+  <!-- PptxGenJS for 1-Click Native .PPTX Export (Allowed by Cloud Run CSP https://cdn.jsdelivr.net) -->
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+  <style>
+    /* 1. LIGHT CORPORATE THEME (Default - Best for Readability, Projectors & PDF) */
+    :root,
+    [data-theme="light"] {
+      --bg-page: #f8fafc;
+      --bg-slide: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-card-alt: #e2e8f0;
+      --bg-code: #e2e8f0;
+      --text-title: #0f172a;
+      --text-subtitle: #3730a3;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --border: #cbd5e1;
+      --accent: #4f46e5;
+      --accent-soft: #e0e7ff;
+      --accent-text: #312e81;
+      --danger-bg: #fef2f2;
+      --danger-border: #fca5a5;
+      --danger-text: #991b1b;
+      --success-bg: #ecfdf5;
+      --success-border: #6ee7b7;
+      --success-text: #065f46;
+      --warn-bg: #fffbeb;
+      --warn-text: #92400e;
+      --shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    }
+
+    /* 2. DARK HIGH-CONTRAST THEME */
+    [data-theme="dark"] {
+      --bg-page: #09090b;
+      --bg-slide: #09090b;
+      --bg-card: #18181b;
+      --bg-card-alt: #27272a;
+      --bg-code: #27272a;
+      --text-title: #ffffff;
+      --text-subtitle: #a5b4fc;
+      --text-main: #f4f4f5;
+      --text-muted: #d4d4d8;
+      --border: #3f3f46;
+      --accent: #6366f1;
+      --accent-soft: #1e1b4b;
+      --accent-text: #c7d2fe;
+      --danger-bg: #2a1215;
+      --danger-border: #ef4444;
+      --danger-text: #fecaca;
+      --success-bg: #0c291e;
+      --success-border: #10b981;
+      --success-text: #a7f3d0;
+      --warn-bg: #2e2108;
+      --warn-text: #fde68a;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    /* 3. NAVY EXECUTIVE THEME */
+    [data-theme="navy"] {
+      --bg-page: #0b1120;
+      --bg-slide: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-alt: #334155;
+      --bg-code: #0f172a;
+      --text-title: #ffffff;
+      --text-subtitle: #7dd3fc;
+      --text-main: #f1f5f9;
+      --text-muted: #cbd5e1;
+      --border: #475569;
+      --accent: #0284c7;
+      --accent-soft: #0c4a6e;
+      --accent-text: #bae6fd;
+      --danger-bg: #3b1319;
+      --danger-border: #f87171;
+      --danger-text: #fecdd3;
+      --success-bg: #083326;
+      --success-border: #34d399;
+      --success-text: #a7f3d0;
+      --warn-bg: #3b2506;
+      --warn-text: #fde68a;
+      --shadow: 0 8px 24px rgba(2, 6, 23, 0.55);
+    }
+
+    /* 4. WARM PAPER / SEPIA THEME */
+    [data-theme="paper"] {
+      --bg-page: #f5f2eb;
+      --bg-slide: #fffdf9;
+      --bg-card: #f3efe6;
+      --bg-card-alt: #e6e0d2;
+      --bg-code: #e6e0d2;
+      --text-title: #1c1917;
+      --text-subtitle: #0f766e;
+      --text-main: #292524;
+      --text-muted: #57534e;
+      --border: #d6d0c4;
+      --accent: #0d9488;
+      --accent-soft: #ccfbf1;
+      --accent-text: #115e59;
+      --danger-bg: #fef2f2;
+      --danger-border: #f87171;
+      --danger-text: #991b1b;
+      --success-bg: #f0fdf4;
+      --success-border: #4ade80;
+      --success-text: #166534;
+      --warn-bg: #fefce8;
+      --warn-text: #854d0e;
+      --shadow: 0 4px 16px rgba(28, 25, 23, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-size: var(--base-font, 16px);
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 2.5rem;
+      background: var(--bg-card);
+      border-bottom: 2px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .top-bar-left,
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .bar-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-right: 0.25rem;
+    }
+
+    .theme-btn {
+      background: var(--bg-slide);
+      color: var(--text-main);
+      border: 1.5px solid var(--border);
+      padding: 0.38rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .theme-btn:hover,
+    .theme-btn.active-theme {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .deck-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-bottom: 5.5rem;
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      min-height: calc(100vh - 7rem);
+      padding: 2.2rem 3.5rem 2.5rem;
+      flex-direction: column;
+      justify-content: flex-start;
+      background: var(--bg-slide);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    body.show-all-slides .slide {
+      display: flex !important;
+      min-height: auto;
+      margin-bottom: 2rem;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    body.show-all-slides .deck-container {
+      padding: 1.5rem 2rem 6rem;
+    }
+
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1.5px solid var(--accent);
+      color: var(--accent-text);
+      font-size: 0.82rem;
+      font-weight: 700;
+      width: fit-content;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      font-size: 2.45rem;
+      line-height: 1.2;
+      margin-bottom: 0.55rem;
+      color: var(--text-title);
+      font-weight: 800;
+    }
+
+    h2 {
+      font-size: 1.85rem;
+      line-height: 1.25;
+      margin-bottom: 0.85rem;
+      color: var(--text-title);
+      font-weight: 800;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      line-height: 1.35;
+      margin-bottom: 0.45rem;
+      color: var(--text-title);
+      font-weight: 700;
+    }
+
+    .subtitle-text {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-subtitle);
+      margin-bottom: 0.75rem;
+    }
+
+    p.lead {
+      font-size: 1.08rem;
+      color: var(--text-main);
+      max-width: 1050px;
+      line-height: 1.55;
+      margin-bottom: 1.15rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.15rem;
+      margin-top: 0.35rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.05rem;
+      margin-top: 0.35rem;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.95rem;
+      margin-top: 0.35rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 1.15rem 1.25rem;
+      box-shadow: var(--shadow);
+      color: var(--text-main);
+    }
+
+    .card-accent {
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+    }
+
+    .card-danger {
+      background: var(--danger-bg);
+      border: 2px solid var(--danger-border);
+      color: var(--text-main);
+    }
+
+    .card-danger h3 {
+      color: var(--danger-text);
+    }
+
+    .card-success {
+      background: var(--success-bg);
+      border: 2px solid var(--success-border);
+      color: var(--text-main);
+    }
+
+    .card-success h3 {
+      color: var(--success-text);
+    }
+
+    ul.feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    ul.feature-list li {
+      font-size: 0.96rem;
+      color: var(--text-main);
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    code {
+      background: var(--bg-code);
+      color: var(--text-title);
+      padding: 0.12rem 0.4rem;
+      border-radius: 5px;
+      font-family: Consolas, monospace;
+      font-size: 0.88em;
+      font-weight: 600;
+    }
+
+    .stat-big {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 0.2rem;
+    }
+
+    table.comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+    }
+
+    table.comp-table th,
+    table.comp-table td {
+      padding: 0.7rem 0.95rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    table.comp-table th {
+      background: var(--accent-soft);
+      color: var(--accent-text);
+      font-weight: 800;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.22rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .pill-green { background: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-border); }
+    .pill-yellow { background: var(--warn-bg); color: var(--warn-text); border: 1px solid #f59e0b; }
+    .pill-red { background: var(--danger-bg); color: var(--danger-text); border: 1px solid var(--danger-border); }
+    .pill-blue { background: var(--accent-soft); color: var(--accent-text); border: 1px solid var(--accent); }
+
+    .rewrite-box {
+      margin-top: 0.65rem;
+      padding: 0.8rem 0.95rem;
+      background: var(--bg-slide);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-main);
+    }
+
+    .url-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 1.2rem;
+      background: var(--success-bg);
+      border: 2px solid var(--success-border);
+      border-radius: 10px;
+      color: var(--success-text);
+      font-weight: 700;
+      font-size: 0.98rem;
+      text-decoration: none;
+      margin-top: 0.95rem;
+      width: fit-content;
+    }
+
+    .controls {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border-top: 2px solid var(--border);
+      padding: 0.65rem 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 200;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    button.ctrl-btn {
+      background: var(--bg-slide);
+      color: var(--text-main);
+      border: 1.5px solid var(--border);
+      padding: 0.45rem 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 700;
+      transition: all 0.15s;
+    }
+
+    button.ctrl-btn:hover {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    button.ctrl-btn-pptx {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .slide-counter {
+      color: var(--text-title);
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    @media print {
+      @page {
+        size: 16in 9in;
+        margin: 0.4in;
+      }
+      body {
+        overflow: visible !important;
+        height: auto !important;
+      }
+      .top-bar,
+      .controls {
+        display: none !important;
+      }
+      .deck-container {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        min-height: auto !important;
+        padding: 1.5rem !important;
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="top-bar">
+  <div class="top-bar-left">
+    <span class="bar-label">🎨 Pilih Tema Slide:</span>
+    <button type="button" class="theme-btn active-theme" id="btn-light">☀️ Terang / Putih (Jelas)</button>
+    <button type="button" class="theme-btn" id="btn-dark">🌙 Gelap (Kontras Tinggi)</button>
+    <button type="button" class="theme-btn" id="btn-navy">📘 Navy Korporat</button>
+    <button type="button" class="theme-btn" id="btn-paper">🌿 Kertas Krem (Ramah Mata)</button>
+  </div>
+  <div class="top-bar-right">
+    <span class="bar-label">🔍 Ukuran Teks &amp; Mode:</span>
+    <button type="button" class="theme-btn" id="btn-font-dec">A-</button>
+    <button type="button" class="theme-btn" id="btn-font-inc">A+</button>
+    <button type="button" class="theme-btn" id="btn-scroll-mode">📜 Tampilkan Semua Slide Sekaligus</button>
+    <a href="/" class="theme-btn">🏠 Buka Aplikasi ToneGuard</a>
+  </div>
+</header>
+
+<div class="deck-container">
+
+  <!-- SLIDE 1: COVER & OVERVIEW -->
+  <section class="slide active">
+    <div class="slide-badge">🚀 Executive Presentation Deck • Slide 1 / 7</div>
+    <h1>🛡️ ToneGuard (v5.3 Hardened)</h1>
+    <div class="subtitle-text">100% Privacy-First Indonesian AI Tone Checker &amp; Stateless Cloud Run Auto-Moderator Bot</div>
+    <p class="lead">
+      Menjembatani kesenjangan empati dalam komunikasi teks berbahasa Indonesia secara <strong>real-time (&lt; 10ms)</strong> dengan arsitektur <strong>Zero Data Retention (0% Penyimpanan Data)</strong> di perangkat pengguna dan Google Cloud Run.
+    </p>
+    <div class="grid-3">
+      <div class="card card-accent">
+        <span class="pill pill-blue">1. Product Vision</span>
+        <h3 style="margin-top: 0.5rem;">De-eskalasi Konflik Proaktif</h3>
+        <p style="font-size: 0.94rem; line-height: 1.5;">Mendeteksi potensi salah paham dan menyarankan 2 kalimat empatik sebelum tombol "Kirim" ditekan.</p>
+      </div>
+      <div class="card card-accent">
+        <span class="pill pill-blue">2. Technical Architecture</span>
+        <h3 style="margin-top: 0.5rem;">On-Device Wasm + Cloud Run</h3>
+        <p style="font-size: 0.94rem; line-height: 1.5;">Inferensi lokal di Web Worker (Transformers.js) + Server Node.js 24 LTS tanpa database di Cloud Run.</p>
+      </div>
+      <div class="card card-accent">
+        <span class="pill pill-blue">3. Market, Business &amp; Roadmap</span>
+        <h3 style="margin-top: 0.5rem;">24 Juta+ Pekerja &amp; UU PDP</h3>
+        <p style="font-size: 0.94rem; line-height: 1.5;">Menjawab kebutuhan komunikasi tim remote &amp; kepatuhan privasi UU PDP dengan Gross Margin B2B &gt; 92%.</p>
+      </div>
+    </div>
+    <a class="url-box" href="https://toneguard-service-iuednz6y3a-et.a.run.app" target="_blank" rel="noopener">
+      🟢 Live Production App (Cloud Run Jakarta): https://toneguard-service-iuednz6y3a-et.a.run.app
+    </a>
+  </section>
+
+  <!-- SLIDE 2: PILLAR 1 - PRODUCT VISION (PROBLEM & VISION) -->
+  <section class="slide">
+    <div class="slide-badge">Pillar 01 • Product Vision (Problem &amp; Empathy Gap) • Slide 2 / 7</div>
+    <h2>🎯 1. Product Vision: Mengatasi Krisis Empati &amp; Privasi Digital</h2>
+    <p class="lead">
+      <strong>Visi Produk:</strong> Mengubah komunikasi digital Indonesia dari <em>reaktif</em> (meminta maaf setelah konflik pecah) menjadi <em>proaktif</em> (mendeteksi nada agresif dalam &lt; 10ms dan menyarankan kalimat empatik tanpa membocorkan data pribadi).
+    </p>
+    <div class="grid-3">
+      <div class="card card-danger">
+        <h3>1. Hilangnya 93% Isyarat Non-Verbal</h3>
+        <p style="line-height: 1.5; margin-top: 0.4rem; font-size: 0.95rem;">
+          Partikel bahasa Indonesia seperti <em>"kok"</em>, <em>"sih"</em>, <em>"dong"</em>, perintah singkat, huruf kapital (ALL CAPS), dan tanda seru (<code>!!</code>) sering memicu salah paham di grup kerja maupun personal.
+        </p>
+      </div>
+      <div class="card card-danger">
+        <h3>2. Risiko Kebocoran PII di Cloud LLM</h3>
+        <p style="line-height: 1.5; margin-top: 0.4rem; font-size: 0.95rem;">
+          Pekerja enggan menyalin draf chat internal kantor, nomor rekening, atau NIK ke server LLM pihak ketiga karena risiko kebocoran data rahasia dan sanksi <strong>UU PDP</strong>.
+        </p>
+      </div>
+      <div class="card card-success">
+        <h3>3. Solusi Visioner ToneGuard</h3>
+        <p style="line-height: 1.5; margin-top: 0.4rem; font-size: 0.95rem;">
+          <strong>Real-Time Tone Radar</strong> (🟢 Aman, 🟡 Kaku, 🔴 Konflik Tinggi) + <strong>2 Opsi Auto-Rewrite</strong> (Hangat &amp; Profesional) + <strong>Automatic PII Scrubber</strong> dengan retensi data 0%.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3: PILLAR 1 - PRODUCT VISION IN ACTION -->
+  <section class="slide">
+    <div class="slide-badge">Pillar 01 • Product Vision in Action (Live Demo) • Slide 3 / 7</div>
+    <h2>🔄 Contoh Nyata: De-eskalasi Konflik &amp; Sensor Privasi Instan</h2>
+    <div class="grid-2">
+      <div class="card card-danger">
+        <span class="pill pill-red">❌ DRAF AWAL PENGGUNA • Skor Risiko: 92% (🔴 Rawan Konflik)</span>
+        <p style="font-size: 1.12rem; font-weight: 700; margin: 0.85rem 0; color: var(--danger-text);">
+          "Lambat banget sih! Transfer ke BCA 8720394812 dan kirim laporannya sekarang juga jangan banyak alasan!"
+        </p>
+        <ul class="feature-list" style="margin-top: 0.5rem;">
+          <li>• <strong>Pemicu Terdeteksi:</strong> Kata merendahkan (<em>"lambat banget"</em>), partikel penekan (<em>"sih"</em>), desakan sepihak (<em>"sekarang juga"</em>), &amp; penutup diskusi (<em>"jangan banyak alasan"</em>).</li>
+          <li>• <strong>Sensor PII Otomatis:</strong> Nomor rekening <code>BCA 8720394812</code> otomatis disamarkan menjadi <code>BCA [REKENING-DISENSOR]</code>.</li>
+        </ul>
+      </div>
+      <div class="card card-success">
+        <span class="pill pill-green">✅ REKOMENDASI AUTO-REWRITE TONEGUARD</span>
+        <div class="rewrite-box">
+          <strong style="color: var(--success-text); font-size: 0.96rem;">✨ Opsi A (Hangat &amp; Empatik):</strong>
+          <p style="margin-top: 0.3rem; font-size: 0.94rem; line-height: 1.5;">
+            "Halo rekan, mohon bantuannya untuk menyelesaikan proses ke BCA [REKENING-DISENSOR] serta mengirimkan laporan tersebut segera ya agar bisa langsung kita tinjau bersama. Terima kasih!"
+          </p>
+        </div>
+        <div class="rewrite-box">
+          <strong style="color: var(--accent); font-size: 0.96rem;">💼 Opsi B (Profesional &amp; Konstruktif):</strong>
+          <p style="margin-top: 0.3rem; font-size: 0.94rem; line-height: 1.5;">
+            "Selamat siang, mengingat tenggat waktu saat ini, mohon agar laporan tersebut dapat segera dikirimkan. Terima kasih atas kerja samanya."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 4: PILLAR 2 - TECHNICAL ARCHITECTURE -->
+  <section class="slide">
+    <div class="slide-badge">Pillar 02 • Technical Architecture • Slide 4 / 7</div>
+    <h2>🧠 2. Technical Architecture: Dual-Layer Zero-Retention</h2>
+    <div class="grid-2">
+      <div class="card card-accent">
+        <h3>📱 Layer 1: 100% On-Device Client PWA</h3>
+        <ul class="feature-list" style="margin-top: 0.65rem;">
+          <li><span>⚙️</span> <div><strong>Dedicated Web Worker (<code>js/worker.js</code>):</strong> Mengisolasi kalkulasi NLP di background thread agar UI Keyboard Simulator tetap responsif 60 FPS.</div></li>
+          <li><span>🧬</span> <div><strong>Hybrid Indonesian Heuristic + Wasm AI:</strong> Memadukan mesin aturan pragmatik Bahasa Indonesia dengan model quantized <code>Transformers.js v2.17.2</code> (<code>distilbert-sst-2</code> ONNX/Wasm).</div></li>
+          <li><span>📴</span> <div><strong>Offline-First Service Worker (<code>sw.js</code>):</strong> Dapat diinstal di Android &amp; iOS sebagai aplikasi mandiri dan bekerja 100% tanpa internet.</div></li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <h3>☁️ Layer 2: Hardened Google Cloud Run Backend</h3>
+        <ul class="feature-list" style="margin-top: 0.65rem;">
+          <li><span>🐳</span> <div><strong>Node.js 24 Active LTS (<code>node:24-alpine</code>):</strong> Container produksi <em>non-root</em> dengan <strong>0 paket <code>node_modules</code></strong> (bebas risiko <em>supply-chain attack</em>).</div></li>
+          <li><span>⚡</span> <div><strong>Sub-3ms Stateless Bot Engine (<code>server.js</code>):</strong> Memproses webhook Telegram, Slack, dan REST API murni di RAM volatil (0 Database, 0 Disk Write).</div></li>
+          <li><span>🛡️</span> <div><strong>Hardened Guardrails (v5.3):</strong> Mitigasi <code>CVE-2026-111497</code> ("Node2Shell"), V8 flags <code>--disable-proto=delete</code>, &amp; Zero-PII SHA-256 Rate Limiter.</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5: PILLAR 3 - MARKET VALIDATION -->
+  <section class="slide">
+    <div class="slide-badge">Pillar 03 • Market Validation (TAM / SAM / SOM &amp; Drivers) • Slide 5 / 7</div>
+    <h2>📊 3. Market Validation &amp; Keunggulan Kompetitif di Indonesia</h2>
+    <div class="grid-3">
+      <div class="card card-accent">
+        <div class="stat-big">212 Juta+</div>
+        <h3>TAM (Total Addressable Market)</h3>
+        <p style="font-size: 0.92rem; line-height: 1.45; margin-top: 0.3rem;">
+          Pengguna aktif aplikasi pesan instan &amp; media sosial di Indonesia yang berkomunikasi via teks setiap hari.
+        </p>
+      </div>
+      <div class="card card-accent">
+        <div class="stat-big">24 Juta+</div>
+        <h3>SAM (Serviceable Available Market)</h3>
+        <p style="font-size: 0.92rem; line-height: 1.45; margin-top: 0.3rem;">
+          Pekerja profesional, tim <em>remote/hybrid</em>, ASN, dan agen <em>Customer Support</em> pengguna grup Telegram, Slack, &amp; CRM.
+        </p>
+      </div>
+      <div class="card card-success">
+        <div class="stat-big">250K+ / 500+</div>
+        <h3>SOM (Target Tahun 1–2)</h3>
+        <p style="font-size: 0.92rem; line-height: 1.45; margin-top: 0.3rem;">
+          250.000+ pengguna aktif PWA individual &amp; 500+ tim korporat/UMKM/komunitas pengguna Bot Moderator ToneGuard.
+        </p>
+      </div>
+    </div>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Komparasi Validasi Pasar</th>
+          <th>Grammarly / Cloud AI Writer</th>
+          <th>ChatGPT / Generic Cloud LLM</th>
+          <th>🛡️ ToneGuard (v5.3)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Nuansa Pragmatik Indonesia</strong></td>
+          <td>Fokus Grammar Inggris</td>
+          <td>Terjemahan kaku / generik</td>
+          <td><span class="pill pill-green">Spesifik Partikel &amp; Chat Indonesia</span></td>
+        </tr>
+        <tr>
+          <td><strong>Kepatuhan UU PDP &amp; Sensor PII</strong></td>
+          <td>Disimpan di Cloud Pihak Ke-3</td>
+          <td>Risiko kebocoran PII tinggi</td>
+          <td><span class="pill pill-green">0% Retention + Auto PII Scrubber</span></td>
+        </tr>
+        <tr>
+          <td><strong>Moderasi Grup Otomatis</strong></td>
+          <td>Tidak Tersedia</td>
+          <td>Membalas semua chat (Spam)</td>
+          <td><span class="pill pill-green">Smart Silent-Pass (Hanya Skor ≥ 55%)</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SLIDE 6: PILLAR 4 - BUSINESS MODEL & UNIT ECONOMICS -->
+  <section class="slide">
+    <div class="slide-badge">Pillar 04 • Business Model &amp; Cloud Run Unit Economics • Slide 6 / 7</div>
+    <h2>💼 4. Business Model: 3-Tier Monetisasi &amp; Efisiensi Cloud Run</h2>
+    <div class="grid-3">
+      <div class="card">
+        <span class="pill pill-green">Tier 1 • B2C Freemium</span>
+        <h3 style="margin-top: 0.55rem;">Gratis Selamanya (Rp 0)</h3>
+        <ul class="feature-list" style="margin-top: 0.5rem;">
+          <li>• Akses penuh Offline-First Web App &amp; Mobile PWA Keyboard Simulator.</li>
+          <li>• Mendorong akuisisi pengguna organik (<em>Product-Led Growth</em>) dengan beban server Rp 0 karena komputasi berjalan 100% di browser klien.</li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <span class="pill pill-blue">Tier 2 • B2B Team Bot SaaS</span>
+        <h3 style="margin-top: 0.55rem;">Rp 149.000 / Grup / Bulan</h3>
+        <ul class="feature-list" style="margin-top: 0.5rem;">
+          <li>• Bot Auto-Moderator tanpa batas untuk grup kerja <strong>Telegram &amp; Slack</strong>.</li>
+          <li>• Kustomisasi ambang batas intervensi (<em>custom risk threshold</em>) &amp; kamus istilah internal perusahaan.</li>
+        </ul>
+      </div>
+      <div class="card card-success">
+        <span class="pill pill-yellow">Tier 3 • Enterprise CS API</span>
+        <h3 style="margin-top: 0.55rem;">Lisensi API Korporat</h3>
+        <ul class="feature-list" style="margin-top: 0.5rem;">
+          <li>• Integrasi REST API (<code>&lt; 3ms</code>) untuk audit kualitas balasan agen <em>Customer Service</em> di perbankan &amp; <em>e-commerce</em>.</li>
+          <li>• <strong>Gross Margin &gt; 92%:</strong> Biaya komputasi Cloud Run &lt; Rp 15.000 per 1 juta request (Rp 0 saat idle).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 7: PILLAR 5 - FUTURE ROADMAP -->
+  <section class="slide">
+    <div class="slide-badge">Pillar 05 • Future Roadmap (2026 – 2027) • Slide 7 / 7</div>
+    <h2>🗺️ 5. Future Roadmap: Peta Jalan Pengembangan Produk</h2>
+    <div class="grid-4">
+      <div class="card card-success">
+        <span class="pill pill-green">Q4 2026 • Selesai (Live)</span>
+        <h3 style="margin-top: 0.55rem;">Phase 1: Core &amp; Cloud Run</h3>
+        <ul class="feature-list" style="margin-top: 0.45rem; font-size: 0.9rem;">
+          <li>• Offline-First PWA &amp; Keyboard Simulator.</li>
+          <li>• Cloud Run Hardened v5.3 (<code>asia-southeast2</code>).</li>
+          <li>• Telegram &amp; Slack Bot + Outbound PII Scrubber.</li>
+        </ul>
+      </div>
+      <div class="card card-accent">
+        <span class="pill pill-blue">Q1 2027 • Next Milestone</span>
+        <h3 style="margin-top: 0.55rem;">Phase 2: Native Mobile IME</h3>
+        <ul class="feature-list" style="margin-top: 0.45rem; font-size: 0.9rem;">
+          <li>• <strong>Native Android Keyboard (IME)</strong> &amp; distribusi via Firebase App Distribution.</li>
+          <li>• Integrasi webhook <strong>WhatsApp Business API (WABA)</strong> &amp; Discord.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-yellow">Q2–Q3 2027 • Expansion</span>
+        <h3 style="margin-top: 0.55rem;">Phase 3: Local Dialect AI</h3>
+        <ul class="feature-list" style="margin-top: 0.45rem; font-size: 0.9rem;">
+          <li>• Akselerasi <strong>WebGPU On-Device IndoBERT</strong>.</li>
+          <li>• Dukungan pragmatik bahasa daerah (Jawa, Sunda) &amp; slang Gen-Z.</li>
+          <li>• Ekstensi Chrome/Edge untuk Gmail &amp; Web WhatsApp.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="pill pill-blue">Q4 2027 • Enterprise Scale</span>
+        <h3 style="margin-top: 0.55rem;">Phase 4: B2B Suite</h3>
+        <ul class="feature-list" style="margin-top: 0.45rem; font-size: 0.9rem;">
+          <li>• Plugin resmi <strong>Microsoft Teams, Zendesk, &amp; Freshdesk</strong>.</li>
+          <li>• On-Premise Docker Appliance untuk institusi perbankan &amp; pemerintahan.</li>
+        </ul>
+      </div>
+    </div>
+    <a class="url-box" href="https://toneguard-service-iuednz6y3a-et.a.run.app" target="_blank" rel="noopener">
+      🚀 Uji Coba Aplikasi Live Sekarang: https://toneguard-service-iuednz6y3a-et.a.run.app
+    </a>
+  </section>
+
+</div>
+
+<div class="controls">
+  <div class="slide-counter" id="slideCounter">Slide 1 / 7</div>
+  <div class="btn-group">
+    <button type="button" class="ctrl-btn" id="btn-prev-slide">← Slide Sebelumnya</button>
+    <button type="button" class="ctrl-btn" id="btn-next-slide">Slide Berikutnya →</button>
+    <button type="button" class="ctrl-btn" id="btn-print-pdf">🖨️ Save as PDF (Sesuai Tema)</button>
+    <button type="button" class="ctrl-btn ctrl-btn-pptx" id="btn-export-pptx">📊 Download .PPTX (Sesuai Tema)</button>
+  </div>
+</div>
+
+<script src="js/pitch-deck.js"></script>
+
+</body>
+</html>
+

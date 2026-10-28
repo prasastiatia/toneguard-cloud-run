@@ -1,0 +1,23 @@
+{
+  "name": "toneguard-cloud-run",
+  "version": "5.3.0",
+  "description": "ToneGuard — Privacy-First AI Tone Checker Web App & Stateless Auto-Detection Bot for Google Cloud Run",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --disable-proto=delete --disallow-code-generation-from-strings server.js",
+    "check": "node --check server.js && node --check js/app.js && node --check js/worker.js"
+  },
+  "engines": {
+    "node": ">=24.22.1"
+  },
+  "keywords": [
+    "tone-checker",
+    "nlp",
+    "indonesian",
+    "privacy-first",
+    "cloud-run",
+    "telegram-bot",
+    "slack-bot"
+  ],
+  "license": "MIT"
+}

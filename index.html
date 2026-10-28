@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Strict Content Security Policy: Tanpa unsafe-inline pada script-src, mengizinkan CDN Transformers.js & Hugging Face Model Weights -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://huggingface.co https://*.huggingface.co https://cdn.jsdelivr.net; worker-src 'self' blob:; object-src 'none'; base-uri 'self';">
+  
+  <title>ToneGuard — Alarm Anti-Salah Paham & AI Tone Checker</title>
+  <meta name="description" content="Ekstensi keyboard pintar & web checker berbasis AI lokal untuk mendeteksi nada pesan teks secara real-time dan menyarankan alternatif kalimat empatik. 100% Privacy-First.">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <div class="brand-logo" aria-hidden="true">🛡️</div>
+        <div>
+          <div class="brand-title">
+            ToneGuard
+            <span class="brand-badge">v2.0 Real-Time</span>
+          </div>
+          <div class="brand-subtitle">Alarm Anti-Salah Paham & Context-Aware AI Tone Checker</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Live Zero-Egress Network Monitor (Clickable to open Live Auditor) -->
+        <button type="button" class="network-monitor-badge" id="network-monitor" title="Klik untuk membuka Live Network & Zero-Egress Security Auditor">
+          <span class="monitor-pulse"></span>
+          <span id="network-egress-text">📡 Network Out: 0.00 KB (Audit)</span>
+        </button>
+
+        <div class="privacy-badge" title="Teks Anda dianalisis secara lokal di peramban tanpa pernah dikirim ke server.">
+          <span class="privacy-dot"></span>
+          <span id="privacy-status-text">100% On-Device Privacy</span>
+        </div>
+
+        <button type="button" id="btn-privacy-blur" class="btn-secondary" title="Samarkan layar dari intipan orang sekitar (Shoulder-Surfing Shield). Otomatis aktif saat Anda pindah tab!">
+          <span id="blur-btn-icon">🕵️</span> <span id="blur-btn-text">Samarkan Layar</span>
+        </button>
+
+        <button type="button" id="btn-offline-toggle" class="btn-secondary" title="Uji verifikasi bahwa aplikasi berfungsi penuh tanpa jaringan internet">
+          <span id="offline-btn-icon">✈️</span> <span id="offline-btn-text">Uji Mode Offline</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Network Security Auditor Drawer (Hidden by default) -->
+  <div id="network-auditor-panel" class="auditor-panel hidden" role="region" aria-label="Live Network Privacy Auditor">
+    <div class="auditor-inner">
+      <div class="auditor-header">
+        <div>
+          <strong>🛡️ Real-Time Browser Network Egress Auditor (PerformanceObserver API)</strong>
+          <p>Memantau seluruh aktivitas jaringan selama sesi pengetikan. Membuktikan 0 byte teks dikirim keluar browser.</p>
+        </div>
+        <button type="button" id="btn-close-auditor" class="btn-secondary">Tutup ✕</button>
+      </div>
+      <div class="auditor-metrics-row">
+        <div class="auditor-stat-card">
+          <span class="auditor-stat-label">Payload Teks Keluar</span>
+          <span id="audit-egress-bytes" class="auditor-stat-value text-emerald">0 Bytes</span>
+        </div>
+        <div class="auditor-stat-card">
+          <span class="auditor-stat-label">Total Analisis Lokal</span>
+          <span id="audit-analysis-count" class="auditor-stat-value">0 kali</span>
+        </div>
+        <div class="auditor-stat-card">
+          <span class="auditor-stat-label">Status Service Worker</span>
+          <span id="audit-sw-status" class="auditor-stat-value text-sky">Memeriksa...</span>
+        </div>
+        <div class="auditor-stat-card">
+          <span class="auditor-stat-label">Isolasi CSP</span>
+          <span class="auditor-stat-value text-emerald">Strict Enforced</span>
+        </div>
+      </div>
+      <div id="audit-log-stream" class="auditor-log-box">
+        <div class="audit-log-entry">[SYSTEM] PerformanceObserver aktif memantau resource & fetch events... Zero keystroke egress terverifikasi.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offline Mode Warning Alert Bar (Active when offline mode is simulated) -->
+  <div id="offline-mode-alert-bar" class="offline-alert-bar hidden">
+    <span>✈️ <strong>AIRPLANE MODE AKTIF (AIR-GAPPED):</strong> Koneksi jaringan terputus. Mesin AI lokal di browser Anda tetap menganalisis nada secara real-time dengan 0 KB data keluar.</span>
+  </div>
+
+  <!-- Main Dual-View Workspace -->
+  <main class="main-layout">
+    
+    <!-- LEFT PANEL: Quick Textarea Checker & Rewriter -->
+    <section class="glass-panel" aria-label="Ruang Kerja Pemeriksaan Nada">
+      
+      <!-- Relationship Modes Selector -->
+      <div class="modes-selector-bar">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <span class="section-label" style="margin-bottom: 0;">1. Pilih Mode Hubungan (Relationship Context)</span>
+          <span id="live-engine-indicator" class="live-engine-tag">
+            <span class="engine-dot"></span> <span id="engine-status-text">Local WASM Ready</span>
+          </span>
+        </div>
+        <div class="mode-pills-container" role="tablist">
+          <button type="button" class="mode-tab-btn active" data-mode="professional" role="tab" aria-selected="true">
+            <span>👔</span> Profesional / Kerja
+          </button>
+          <button type="button" class="mode-tab-btn" data-mode="partner" role="tab" aria-selected="false">
+            <span>💖</span> Pasangan & Keluarga
+          </button>
+          <button type="button" class="mode-tab-btn" data-mode="casual" role="tab" aria-selected="false">
+            <span>☕</span> Kasual / Teman
+          </button>
+        </div>
+
+        <!-- Power Dynamics / Sub-Role Selector (Upgrade #4) -->
+        <div class="subrole-bar">
+          <span class="subrole-label">Hierarki / Relasi Spesifik:</span>
+          <div id="subrole-pills-container" class="subrole-pills-container"></div>
+        </div>
+      </div>
+
+      <!-- Incoming Message Context Selector (Reply-Context Awareness) -->
+      <div class="incoming-context-card">
+        <div class="incoming-context-header">
+          <span class="section-label" style="margin-bottom: 0;">💬 Konteks Pesan Masuk yang Sedang Dibalas:</span>
+          <button type="button" id="btn-cycle-scenario" class="btn-scenario-switch" title="Ganti skenario pesan dari lawan bicara">
+            🔄 Ganti Skenario Chat
+          </button>
+        </div>
+        <div class="incoming-context-body">
+          <span id="context-sender-badge" class="context-sender-badge">👔 Budi:</span>
+          <input 
+            type="text" 
+            id="incoming-context-input" 
+            class="incoming-context-input" 
+            value="Halo, bagaimana perkembangan draf laporan untuk presentasi jam 3 nanti?"
+            aria-label="Edit konteks pesan masuk"
+            title="Anda dapat mengedit pesan lawan bicara ini untuk menguji respons kontekstual">
+        </div>
+      </div>
+
+      <!-- Real-Time Tone Status Banner (Traffic Light + 4D Breakdown) -->
+      <div id="tone-banner" class="tone-status-banner" data-state="neutral">
+        <div class="tone-banner-top">
+          <div class="tone-status-left">
+            <div id="tone-bulb" class="traffic-bulb" aria-hidden="true"></div>
+            <div class="tone-text-group">
+              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <span id="tone-label" class="tone-main-label">Menunggu Input...</span>
+                <span id="live-latency-pill" class="live-latency-pill">⚡ 0 ms</span>
+                <span id="cadence-status-pill" class="cadence-pill">⌨️ Ritme Ketik: Siap</span>
+              </div>
+              <span id="tone-desc" class="tone-desc">Ketik pesan Anda di bawah atau klik salah satu contoh template cepat.</span>
+            </div>
+          </div>
+          <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+            <div id="tone-risk-badge" class="tone-metric-badge">Risiko: 0%</div>
+            <div class="risk-bar-track">
+              <div id="risk-bar-fill" class="risk-bar-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-Dimensional Tone Breakdown Bars -->
+        <div class="tone-dimensions-grid">
+          <div class="dim-item">
+            <div class="dim-label-row">
+              <span>🙏 Kesopanan</span>
+              <span id="dim-val-politeness">50%</span>
+            </div>
+            <div class="dim-track"><div id="dim-bar-politeness" class="dim-fill dim-emerald" style="width: 50%;"></div></div>
+          </div>
+          <div class="dim-item">
+            <div class="dim-label-row">
+              <span>💖 Kehangatan</span>
+              <span id="dim-val-warmth">50%</span>
+            </div>
+            <div class="dim-track"><div id="dim-bar-warmth" class="dim-fill dim-indigo" style="width: 50%;"></div></div>
+          </div>
+          <div class="dim-item">
+            <div class="dim-label-row">
+              <span>🎯 Ketegasan</span>
+              <span id="dim-val-assertiveness">50%</span>
+            </div>
+            <div class="dim-track"><div id="dim-bar-assertiveness" class="dim-fill dim-sky" style="width: 50%;"></div></div>
+          </div>
+          <div class="dim-item">
+            <div class="dim-label-row">
+              <span>⚡ Tekanan/Urgensi</span>
+              <span id="dim-val-urgency">10%</span>
+            </div>
+            <div class="dim-track"><div id="dim-bar-urgency" class="dim-fill dim-amber" style="width: 10%;"></div></div>
+          </div>
+        </div>
+
+        <!-- Explainable AI (XAI) Reasoning Breakdown Chips -->
+        <div id="xai-breakdown-row" class="xai-breakdown-row hidden">
+          <span class="xai-title">🧠 Rincian Kalkulasi AI (XAI):</span>
+          <div id="xai-factors-container" class="xai-factors-container"></div>
+        </div>
+      </div>
+
+      <!-- PII / Sensitive Data Warning Alert (Hidden by default) -->
+      <div id="pii-warning" class="pii-warning-banner hidden" role="alert">
+        <span style="font-size: 1.25rem;">🔒</span>
+        <div style="flex: 1;">
+          <strong style="display:block; margin-bottom: 2px;">Data Sensitif Dideteksi!</strong>
+          <span id="pii-message">Kredensial atau informasi rahasia ditemukan. Tone check dinonaktifkan demi privasi Anda.</span>
+          <div style="margin-top: 0.55rem;">
+            <button type="button" id="btn-redact-pii" class="btn-redact-pii">
+              🛡️ Sensor Data Sensitif ([DISENSOR]) & Lanjutkan Cek Nada
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Preset Template Chips -->
+      <div class="presets-bar">
+        <span class="section-label" style="margin-bottom: 0;">Uji Cepat:</span>
+        <div id="presets-list" style="display: flex; gap: 0.4rem; flex-wrap: wrap;"></div>
+      </div>
+
+      <!-- Text Editor Container -->
+      <div class="editor-wrapper">
+        <textarea 
+          id="user-text-input" 
+          class="main-textarea" 
+          placeholder="Ketik draf pesan Anda di sini... (misal: 'Mana laporan keuangan bulan Mei sekarang juga?! Jangan banyak alasan!')"
+          rows="4"
+          spellcheck="false"
+          aria-label="Kolom Input Pesan"></textarea>
+
+        <!-- Interactive Inline Trigger Highlight & Surgical Quick-Fix Bar -->
+        <div id="inline-highlight-panel" class="inline-highlight-panel hidden">
+          <div class="highlight-panel-header">
+            <span>🔍 <strong>Deteksi Frasa & Perbaikan Cepat (Klik kata berwarna merah/kuning untuk memperhalus langsung):</strong></span>
+          </div>
+          <div id="highlighted-text-view" class="highlighted-text-view"></div>
+        </div>
+        
+        <div class="editor-footer-bar">
+          <div class="editor-counters">
+            <span id="char-count">0 karakter</span> • <span id="word-count">0 kata</span>
+            <span id="auto-shred-badge" class="auto-shred-pill" title="Penghancur memori otomatis: menghapus draf dari RAM jika tidak ada aktivitas selama 3 menit.">⏱️ Auto-Shred: Siaga</span>
+          </div>
+          <div class="editor-actions">
+            <button type="button" id="btn-paste-clipboard" class="btn-utility-action" title="Tempel cepat teks dari Clipboard">
+              <span>📥</span> Paste
+            </button>
+            <button type="button" id="btn-undo-draft" class="btn-utility-action hidden" title="Kembalikan draf teks asli sebelum rewrite">
+              <span>↩️</span> Undo Asli
+            </button>
+            <button type="button" id="btn-share-wa" class="btn-utility-action btn-wa-action" title="Buka dan kirim teks ini langsung ke WhatsApp">
+              <span>💬</span> WhatsApp
+            </button>
+            <button type="button" id="btn-share-email" class="btn-utility-action" title="Buka aplikasi Email dengan draf teks ini">
+              <span>✉️</span> Email
+            </button>
+            <button type="button" id="btn-secure-clear" class="btn-text-action" title="Hapus teks dan bersihkan memori RAM">
+              <span>🗑️</span> Clear
+            </button>
+            <button type="button" id="btn-send-simulator" class="btn-send-sim" title="Kirim pesan ini ke layar Chat Simulator di kanan dan lihat reaksi lawan bicara!">
+              <span>📱</span> Kirim ke Simulator
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empathetic AI Rewriter Cards Container -->
+      <div class="rewrites-section">
+        <div class="section-title-row">
+          <h2 class="section-title">
+            <span>✨</span> Opsi Tulis Ulang Cerdas (Context-Preserving Rewriter)
+          </h2>
+          <span style="font-size: 0.72rem; color: var(--text-muted);">Mempertahankan Topik Asli Anda</span>
+        </div>
+        
+        <div id="rewrites-container" class="rewrite-cards-list">
+          <!-- Populated dynamically by app.js -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT PANEL: Interactive Phone Keyboard Simulator -->
+    <section class="simulator-column" aria-label="Simulasi Keyboard Smartphone ToneGuard">
+      
+      <div class="phone-mockup-frame">
+        <!-- Dynamic Island Notch -->
+        <div class="phone-top-island">
+          <div class="island-camera"></div>
+        </div>
+
+        <!-- Phone System Status Bar -->
+        <div class="phone-status-bar">
+          <span id="phone-clock">9:41</span>
+          <span id="phone-signal-indicator" style="letter-spacing: 2px;">📶 5G 🔋</span>
+        </div>
+
+        <!-- Simulated Chat Screen -->
+        <div class="phone-chat-screen">
+          <div class="chat-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div id="sim-contact-avatar" class="chat-avatar">👔</div>
+              <div class="chat-contact-info">
+                <span id="sim-contact-name" class="chat-contact-name">Budi Santoso (Project Lead)</span>
+                <span id="sim-contact-status" class="chat-contact-status">Online di Slack</span>
+              </div>
+            </div>
+            <button type="button" id="btn-reset-chat" class="btn-chat-reset" title="Bersihkan riwayat chat simulator">
+              🔄 Reset
+            </button>
+          </div>
+
+          <!-- Auto-Bot Group Moderator Control Bar -->
+          <div class="bot-automod-bar">
+            <span id="bot-automod-status" class="bot-automod-status">🤖 Auto-Bot Guard: Memantau</span>
+            <button type="button" id="btn-sim-group-conflict" class="btn-sim-bot-test" title="Simulasikan anggota grup mengirim pesan ketus dan lihat Bot mendeteksi otomatis">
+              ⚡ Uji Deteksi Bot Otomatis
+            </button>
+          </div>
+
+          <div id="chat-messages-stream" class="chat-messages-stream">
+            <!-- Simulated Incoming Message -->
+            <div id="sim-msg-incoming" class="msg-bubble msg-incoming">
+              Halo, bagaimana perkembangan draf laporan untuk presentasi jam 3 nanti?
+            </div>
+
+            <!-- Dynamic Conversation History Container -->
+            <div id="sim-chat-history" class="sim-chat-history"></div>
+
+            <!-- Outgoing Message Live Typing Preview -->
+            <div id="sim-outgoing-bubble" class="msg-bubble msg-outgoing-preview">
+              <span id="sim-outgoing-text">Mulai ketik pesan...</span>
+              <span class="typing-cursor"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Integrated ToneGuard Mobile Keyboard Toolbar -->
+        <div class="toneguard-kb-toolbar">
+          <div id="sim-toolbar-pill" class="tb-tone-pill">
+            <div id="sim-toolbar-dot" class="tb-pill-dot"></div>
+            <span id="sim-toolbar-label">Siap Cek</span>
+          </div>
+
+          <button type="button" id="sim-rewrite-trigger" class="tb-rewrite-btn" title="Terapkan saran kalimat pertama">
+            <span>✨</span> Perhalus Otomatis
+          </button>
+        </div>
+
+        <!-- Smart Phrase Autocomplete Strip on Phone Keyboard (Upgrade #6) -->
+        <div id="sim-phrase-strip" class="sim-phrase-strip" aria-label="Sugesti Frasa Cepat"></div>
+
+        <!-- Interactive On-Screen QWERTY Keyboard -->
+        <div class="virtual-keyboard" aria-label="Keyboard Virtual Interaktif">
+          <!-- Quick Emoji Strip -->
+          <div class="kb-row kb-emoji-row">
+            <button type="button" class="kb-key kb-key-emoji" data-key="🙏">🙏</button>
+            <button type="button" class="kb-key kb-key-emoji" data-key="😊">😊</button>
+            <button type="button" class="kb-key kb-key-emoji" data-key="👍">👍</button>
+            <button type="button" class="kb-key kb-key-emoji" data-key="❤️">❤️</button>
+            <button type="button" class="kb-key kb-key-emoji" data-key="🙌">🙌</button>
+            <button type="button" class="kb-key kb-key-emoji" data-key="🙂">🙂</button>
+            <button type="button" class="kb-key kb-key-emoji" data-key="🙄">🙄</button>
+          </div>
+          <!-- Row 1 -->
+          <div class="kb-row">
+            <button type="button" class="kb-key" data-key="Q">q</button>
+            <button type="button" class="kb-key" data-key="W">w</button>
+            <button type="button" class="kb-key" data-key="E">e</button>
+            <button type="button" class="kb-key" data-key="R">r</button>
+            <button type="button" class="kb-key" data-key="T">t</button>
+            <button type="button" class="kb-key" data-key="Y">y</button>
+            <button type="button" class="kb-key" data-key="U">u</button>
+            <button type="button" class="kb-key" data-key="I">i</button>
+            <button type="button" class="kb-key" data-key="O">o</button>
+            <button type="button" class="kb-key" data-key="P">p</button>
+          </div>
+          <!-- Row 2 -->
+          <div class="kb-row">
+            <button type="button" class="kb-key" data-key="A">a</button>
+            <button type="button" class="kb-key" data-key="S">s</button>
+            <button type="button" class="kb-key" data-key="D">d</button>
+            <button type="button" class="kb-key" data-key="F">f</button>
+            <button type="button" class="kb-key" data-key="G">g</button>
+            <button type="button" class="kb-key" data-key="H">h</button>
+            <button type="button" class="kb-key" data-key="J">j</button>
+            <button type="button" class="kb-key" data-key="K">k</button>
+            <button type="button" class="kb-key" data-key="L">l</button>
+          </div>
+          <!-- Row 3 -->
+          <div class="kb-row">
+            <button type="button" class="kb-key kb-key-special" data-key="CAPS">⇧</button>
+            <button type="button" class="kb-key" data-key="Z">z</button>
+            <button type="button" class="kb-key" data-key="X">x</button>
+            <button type="button" class="kb-key" data-key="C">c</button>
+            <button type="button" class="kb-key" data-key="V">v</button>
+            <button type="button" class="kb-key" data-key="B">b</button>
+            <button type="button" class="kb-key" data-key="N">n</button>
+            <button type="button" class="kb-key" data-key="M">m</button>
+            <button type="button" class="kb-key kb-key-special" data-key="BACKSPACE">⌫</button>
+          </div>
+          <!-- Row 4 -->
+          <div class="kb-row">
+            <button type="button" class="kb-key kb-key-special" data-key=",">,</button>
+            <button type="button" class="kb-key kb-key-space" data-key="SPACE">spasi</button>
+            <button type="button" class="kb-key kb-key-special" data-key=".">.</button>
+            <button type="button" class="kb-key kb-key-send" data-key="SEND">Kirim</button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <p>
+      🛡️ <strong>ToneGuard v2.0</strong> — Ditenagai oleh AI Lokal di Peramban Anda. 
+      Nol pengiriman log chat ke server awan. Mematuhi standar privasi PDP & GDPR.
+    </p>
+  </footer>
+
+  <!-- Pre-Send Alarm Interception Modal ("Alarm Anti-Salah Paham" Active Friction Shield) -->
+  <div id="alarm-interception-modal" class="alarm-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="alarm-modal-title">
+    <div class="alarm-modal-card">
+      <div class="alarm-modal-header">
+        <span class="alarm-siren-icon">🚨</span>
+        <div>
+          <h3 id="alarm-modal-title">Tunggu Dulu! Alarm Anti-Salah Paham Aktif</h3>
+          <span id="alarm-risk-subtitle" class="alarm-risk-subtitle">Skor Risiko Konflik: 75% (Nada Ketus / Agresif)</span>
+        </div>
+      </div>
+      <p id="alarm-impact-desc" class="alarm-impact-desc">
+        Pesan Anda berisiko tinggi membuat lawan bicara merasa diserang, tersinggung, atau merespons secara defensif.
+      </p>
+      <div class="alarm-comparison-box">
+        <div class="alarm-draft-bad">
+          <span class="alarm-box-label">❌ Draf Asli Anda (Rawan Konflik):</span>
+          <p id="alarm-original-preview"></p>
+        </div>
+        <div class="alarm-draft-good">
+          <span class="alarm-box-label">✅ Rekomendasi Empatik ToneGuard (Konteks Terjaga):</span>
+          <p id="alarm-safe-preview"></p>
+        </div>
+      </div>
+      <div class="alarm-modal-actions">
+        <button type="button" id="btn-alarm-send-safe" class="btn-alarm-primary">
+          ✨ Kirim Versi Empatik Saja (Aman)
+        </button>
+        <button type="button" id="btn-alarm-cancel" class="btn-secondary">
+          ✏️ Edit Kembali
+        </button>
+        <button type="button" id="btn-alarm-force-send" class="btn-alarm-danger">
+          ⚠️ Tetap Kirim Pesan Asli
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+</body>
+</html>

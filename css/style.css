@@ -1,0 +1,2104 @@
+/* ==========================================================================
+   ToneGuard: Modern Design System & Stylesheet
+   Theme: Sleek Charcoal / Dark Zinc + Glassmorphism + Dynamic Traffic Light
+   ========================================================================== */
+
+:root {
+  /* Surface & Neutral Colors (Tailwind Zinc Palette) */
+  --bg-main: #09090b;
+  --bg-surface: #121215;
+  --bg-card: rgba(24, 24, 27, 0.75);
+  --bg-card-hover: rgba(39, 39, 42, 0.75);
+  --bg-elevated: #1e1e24;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(255, 255, 255, 0.2);
+
+  /* Typography */
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Traffic Light Accent Colors */
+  --emerald-green: #10b981;
+  --emerald-glow: rgba(16, 185, 129, 0.25);
+  --emerald-bg: rgba(16, 185, 129, 0.12);
+
+  --amber-yellow: #f59e0b;
+  --amber-glow: rgba(245, 158, 11, 0.25);
+  --amber-bg: rgba(245, 158, 11, 0.12);
+
+  --rose-red: #ef4444;
+  --rose-glow: rgba(239, 68, 68, 0.28);
+  --rose-bg: rgba(239, 68, 68, 0.14);
+
+  --brand-indigo: #6366f1;
+  --brand-indigo-glow: rgba(99, 102, 241, 0.25);
+
+  /* Transitions & Shadows */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --shadow-glow: 0 0 25px rgba(0, 0, 0, 0.5);
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Global Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* App Header */
+.app-header {
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(16px);
+  background: rgba(9, 9, 11, 0.85);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.85rem 1.5rem;
+}
+
+.header-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(79, 70, 229, 0.35);
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.brand-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 999px;
+}
+
+.brand-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.privacy-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: #34d399;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.privacy-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--emerald-green);
+  box-shadow: 0 0 8px var(--emerald-green);
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: var(--border-active);
+}
+
+.btn-secondary.active-offline {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fde047;
+  border-color: rgba(245, 158, 11, 0.6);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+}
+
+/* Zero-Egress Network Monitor Badge */
+.network-monitor-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.monitor-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: pulse-monitor 1.8s infinite;
+}
+
+@keyframes pulse-monitor {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+/* Offline Mode Full Alert Bar */
+.offline-alert-bar {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3), rgba(245, 158, 11, 0.2));
+  border-bottom: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fef3c7;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.8rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  animation: slide-in-bar 250ms ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 90;
+}
+
+.offline-alert-bar.hidden {
+  display: none;
+}
+
+@keyframes slide-in-bar {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Live Engine Indicator Tag */
+.live-engine-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #a1a1aa;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+}
+
+.engine-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--emerald-green);
+  box-shadow: 0 0 6px var(--emerald-green);
+}
+
+.engine-dot.evaluating {
+  background-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: pulse-eval 600ms infinite alternate;
+}
+
+@keyframes pulse-eval {
+  from { transform: scale(0.8); opacity: 0.6; }
+  to { transform: scale(1.3); opacity: 1; }
+}
+
+/* Live Latency Gauge Pill */
+.live-latency-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Risk Meter Track & Dynamic Fill */
+.risk-bar-track {
+  width: 90px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.risk-bar-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--emerald-green);
+  transition: width 250ms cubic-bezier(0.16, 1, 0.3, 1), background-color 250ms ease;
+}
+
+/* Virtual Keyboard Live Keypress Glow */
+.kb-key.kb-key-pressed {
+  background: #6366f1 !important;
+  color: #fff !important;
+  box-shadow: 0 0 12px #6366f1 !important;
+  transform: translateY(2px) scale(0.92);
+}
+
+/* Airplane Mode Visual Overrides on Body */
+body.airplane-mode-active {
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(217, 119, 6, 0.05) 0%, transparent 40%);
+}
+
+body.airplane-mode-active .glass-panel {
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+body.airplane-mode-active .privacy-badge {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+body.airplane-mode-active .privacy-dot {
+  background-color: var(--amber-yellow);
+  box-shadow: 0 0 8px var(--amber-yellow);
+}
+
+/* Main Workspace Layout */
+.main-layout {
+  max-width: 1360px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Glass Card Container */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  transition: border-color var(--transition-smooth);
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Relationship Mode Tabs */
+.modes-selector-bar {
+  margin-bottom: 1.25rem;
+}
+
+.section-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.mode-pills-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.mode-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.6rem 0.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  transition: all var(--transition-fast);
+}
+
+.mode-tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mode-tab-btn.active {
+  background: var(--bg-elevated);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Real-Time Tone Indicator Bar */
+.tone-status-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.95rem 1.15rem;
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 1.25rem;
+  transition: all var(--transition-smooth);
+}
+
+.tone-banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.tone-status-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.traffic-bulb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3f3f46;
+  transition: all var(--transition-smooth);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.traffic-bulb::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--transition-smooth);
+}
+
+/* Dynamic State Colors for Bulb */
+.tone-status-banner[data-state="green"] .traffic-bulb {
+  background: var(--emerald-green);
+  box-shadow: 0 0 16px var(--emerald-green);
+}
+.tone-status-banner[data-state="green"] {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: var(--emerald-bg);
+}
+
+.tone-status-banner[data-state="yellow"] .traffic-bulb {
+  background: var(--amber-yellow);
+  box-shadow: 0 0 16px var(--amber-yellow);
+  animation: pulse-ring 1.8s infinite;
+}
+.tone-status-banner[data-state="yellow"] {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: var(--amber-bg);
+}
+
+.tone-status-banner[data-state="red"] .traffic-bulb {
+  background: var(--rose-red);
+  box-shadow: 0 0 20px var(--rose-red);
+  animation: pulse-ring 1.2s infinite;
+}
+.tone-status-banner[data-state="red"] {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: var(--rose-bg);
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.9; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.9; }
+}
+
+.tone-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.tone-main-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tone-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.tone-metric-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Textarea Editor Card */
+.editor-wrapper {
+  position: relative;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  transition: border-color var(--transition-fast);
+}
+
+.editor-wrapper:focus-within {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.main-textarea {
+  width: 100%;
+  min-height: 140px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+
+.main-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.editor-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.editor-counters {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.editor-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-text-action {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.btn-text-action:hover {
+  color: var(--rose-red);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Quick Presets Dropdown & Chips */
+.presets-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.preset-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.74rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.preset-chip:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: var(--text-primary);
+  border-color: var(--border-active);
+}
+
+/* PII Warning Banner */
+.pii-warning-banner {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.82rem;
+  animation: slide-in 200ms ease-out;
+}
+
+.pii-warning-banner.hidden {
+  display: none;
+}
+
+/* Rewrite Recommendations Section */
+.rewrites-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rewrite-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rewrite-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.rewrite-card:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(24, 24, 27, 0.95);
+  transform: translateY(-1px);
+}
+
+.rewrite-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rewrite-style-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.rewrite-text-content {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.55;
+  font-style: italic;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--emerald-green);
+}
+
+.rewrite-benefit {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.rewrite-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.btn-card-action {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-card-action:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+}
+
+.btn-card-primary {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+
+.btn-card-primary:hover {
+  background: rgba(16, 185, 129, 0.25);
+  color: #fff;
+  border-color: var(--emerald-green);
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: INTERACTIVE PHONE KEYBOARD SIMULATOR
+   ========================================================================== */
+
+.simulator-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 5rem;
+}
+
+.phone-mockup-frame {
+  width: 100%;
+  max-width: 360px;
+  background: #09090b;
+  border: 4px solid #27272a;
+  border-radius: 42px;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 25px 60px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 680px;
+}
+
+/* Dynamic Island / Speaker */
+.phone-top-island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 24px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.island-camera {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #18181b;
+  margin-left: 45px;
+}
+
+/* Phone Status Bar */
+.phone-status-bar {
+  padding: 12px 20px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  color: #fff;
+  font-weight: 600;
+  z-index: 40;
+}
+
+/* Simulated Chat Screen */
+.phone-chat-screen {
+  flex: 1;
+  background: #0b0f14;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-header {
+  padding: 8px 14px;
+  background: #161c24;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chat-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #312e81;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.chat-contact-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-contact-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.chat-contact-status {
+  font-size: 0.65rem;
+  color: #10b981;
+}
+
+/* Message Bubbles Container */
+.chat-messages-stream {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.msg-bubble {
+  max-width: 82%;
+  padding: 8px 11px;
+  border-radius: 14px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  position: relative;
+  word-break: break-word;
+}
+
+.msg-incoming {
+  align-self: flex-start;
+  background: #1f2937;
+  color: #e5e7eb;
+  border-bottom-left-radius: 3px;
+}
+
+.msg-outgoing-preview {
+  align-self: flex-end;
+  background: #065f46;
+  color: #d1fae5;
+  border-bottom-right-radius: 3px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 13px;
+  background: #34d399;
+  margin-left: 2px;
+  animation: blink-caret 0.9s infinite;
+}
+
+@keyframes blink-caret {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* ==========================================================================
+   TONEGUARD KEYBOARD EXTENSION TOOLBAR ON PHONE
+   ========================================================================== */
+
+.toneguard-kb-toolbar {
+  background: #18181b;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  z-index: 30;
+}
+
+.tb-tone-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.tb-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #52525b;
+}
+
+.tb-rewrite-btn {
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #c7d2fe;
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  transition: all var(--transition-fast);
+}
+
+.tb-rewrite-btn:hover {
+  background: rgba(99, 102, 241, 0.35);
+  color: #fff;
+}
+
+/* Virtual On-Screen Keyboard */
+.virtual-keyboard {
+  background: #121215;
+  padding: 6px 4px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  user-select: none;
+}
+
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.kb-key {
+  height: 38px;
+  background: #27272a;
+  color: #f4f4f5;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 60ms ease, background 60ms ease;
+  flex: 1;
+  max-width: 32px;
+}
+
+.kb-key:hover {
+  background: #3f3f46;
+}
+
+.kb-key:active {
+  transform: translateY(2px) scale(0.96);
+  background: #52525b;
+}
+
+.kb-key-special {
+  background: #1c1c20;
+  color: #a1a1aa;
+  max-width: 44px;
+  font-size: 0.72rem;
+}
+
+.kb-key-space {
+  max-width: 140px;
+  font-size: 0.72rem;
+  color: #71717a;
+}
+
+.kb-key-send {
+  max-width: 58px;
+  background: #10b981;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.kb-key-send:hover {
+  background: #059669;
+}
+
+/* Toast Feedback Notification */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.toast-item {
+  background: #18181b;
+  border: 1px solid var(--border-active);
+  color: #fff;
+  padding: 0.75rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: slide-toast 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-toast {
+  from { opacity: 0; transform: translateY(12px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* App Footer */
+.app-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  background: rgba(9, 9, 11, 0.9);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .simulator-column {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    padding: 0.75rem 1rem;
+  }
+  .privacy-badge span {
+    display: none;
+  }
+  .main-layout {
+    padding: 0 1rem 2rem;
+  }
+  .mode-pills-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================================
+   TONEGUARD v2.0 UPGRADES:
+   1. Incoming Context Card & Scenario Switcher
+   2. 4-Dimensional Tone Breakdown Bars
+   3. Inline Trigger Highlight & Surgical Quick-Fix Spans
+   4. Interactive Two-Way Chat Bubbles & Mood Reactions
+   5. Real-Time Browser Network Security Auditor Drawer
+   ========================================================================== */
+
+/* 1. Incoming Context Bar */
+.incoming-context-card {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.incoming-context-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.btn-scenario-switch {
+  background: rgba(99, 102, 241, 0.16);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #c7d2fe;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-scenario-switch:hover {
+  background: rgba(99, 102, 241, 0.3);
+  color: #fff;
+}
+
+.incoming-context-body {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.context-sender-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  white-space: nowrap;
+}
+
+.incoming-context-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+/* 2. 4-Dimensional Tone Breakdown Bars */
+.tone-dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.dim-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dim-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.dim-track {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dim-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dim-emerald { background: #10b981; }
+.dim-indigo  { background: #818cf8; }
+.dim-sky     { background: #38bdf8; }
+.dim-amber   { background: #f59e0b; }
+
+/* 3. Inline Trigger Highlight & Surgical Quick-Fix Panel */
+.inline-highlight-panel {
+  margin-top: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.inline-highlight-panel.hidden {
+  display: none;
+}
+
+.highlight-panel-header {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.highlighted-text-view {
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.hl-span {
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-weight: 600;
+  margin: 0 1px;
+  display: inline-block;
+  transition: all var(--transition-fast);
+}
+
+.hl-red {
+  background: rgba(239, 68, 68, 0.22);
+  border-bottom: 2px solid #ef4444;
+  color: #fecaca;
+  cursor: pointer;
+}
+.hl-red:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-bottom-color: #10b981;
+  color: #fff;
+}
+
+.hl-yellow {
+  background: rgba(245, 158, 11, 0.22);
+  border-bottom: 2px solid #f59e0b;
+  color: #fde68a;
+  cursor: pointer;
+}
+.hl-yellow:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-bottom-color: #10b981;
+  color: #fff;
+}
+
+.hl-green {
+  background: rgba(16, 185, 129, 0.18);
+  border-bottom: 2px solid #10b981;
+  color: #a7f3d0;
+}
+
+.hl-fix-hint {
+  font-size: 0.65rem;
+  opacity: 0.85;
+  font-weight: 700;
+  color: #34d399;
+}
+
+/* Context Preserved Pill & Editor Send Simulator Button */
+.context-preserved-pill {
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.btn-send-sim {
+  background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+  border: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all var(--transition-fast);
+}
+.btn-send-sim:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.btn-card-send {
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #c7d2fe;
+}
+.btn-card-send:hover {
+  background: rgba(99, 102, 241, 0.35);
+  color: #fff;
+}
+
+/* 4. Interactive Two-Way Chat Bubbles in Simulator */
+.sim-chat-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.msg-sent {
+  align-self: flex-end;
+  color: #fff;
+  border-bottom-right-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.msg-sent-green {
+  background: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.msg-sent-yellow {
+  background: #78350f;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+}
+
+.msg-sent-red {
+  background: #7f1d1d;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+.msg-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.62rem;
+  opacity: 0.85;
+}
+
+.msg-tone-tag {
+  font-weight: 700;
+}
+
+.msg-typing-indicator {
+  font-style: italic;
+  color: #9ca3af;
+  font-size: 0.72rem;
+  animation: pulse-dot 1.2s infinite;
+}
+
+.msg-dynamic-reply {
+  border-left: 3px solid #6366f1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.reply-mood-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.btn-chat-reset {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #d4d4d8;
+  font-family: inherit;
+  font-size: 0.65rem;
+  padding: 3px 7px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.btn-chat-reset:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* 5. Live Network Security Auditor Panel */
+.network-monitor-badge {
+  cursor: pointer;
+  font-family: inherit;
+}
+.network-monitor-badge:hover {
+  background: rgba(14, 116, 144, 0.35);
+  border-color: #38bdf8;
+}
+
+.auditor-panel {
+  background: #0d1117;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 1rem 1.5rem;
+}
+.auditor-panel.hidden {
+  display: none;
+}
+
+.auditor-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.auditor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+.auditor-header p {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
+.auditor-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.auditor-stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.auditor-stat-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.auditor-stat-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.text-emerald { color: #34d399; }
+.text-sky     { color: #38bdf8; }
+
+.auditor-log-box {
+  background: #05070a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.85rem;
+  max-height: 110px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+@media (max-width: 640px) {
+  .tone-dimensions-grid,
+  .auditor-metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+/* ==========================================================================
+   TONEGUARD v3.0 DEEP PRAGMATIC & XAI STYLES:
+   1. Keystroke Cadence & Agitation Pill
+   2. Explainable AI (XAI) Reasoning Breakdown Chips
+   ========================================================================== */
+
+.cadence-pill {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #a1a1aa;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+  transition: all var(--transition-fast);
+}
+
+.cadence-pill[data-cadence="calm"] {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.cadence-pill[data-cadence="hesitant"] {
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.cadence-pill[data-cadence="impulsive"] {
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.22);
+  border-color: rgba(239, 68, 68, 0.5);
+  animation: pulse-ring 1.2s infinite;
+}
+
+.xai-breakdown-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.xai-breakdown-row.hidden {
+  display: none;
+}
+
+.xai-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.xai-factors-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+}
+
+.xai-chip {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.xai-risk {
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.38);
+  color: #fca5a5;
+}
+
+.xai-safe {
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+
+.xai-info {
+  background: rgba(99, 102, 241, 0.16);
+  border: 1px solid rgba(99, 102, 241, 0.38);
+  color: #c7d2fe;
+}
+
+
+/* ==========================================================================
+   TONEGUARD v4.0 REAL-WORLD UTILITY & ACTIVE ALARM SHIELD STYLES:
+   1. Sub-Role / Power Dynamics Selector Pills
+   2. PII 1-Click Auto-Redact Button
+   3. Editor Utility Actions (Paste, Undo, WhatsApp, Email)
+   4. Word-by-Word Visual Diff View (Removed vs. Added Tokens)
+   5. Smart Phrase Autocomplete Strip & Quick Emoji Keyboard Row
+   6. Pre-Send Alarm Interception Modal ("Alarm Anti-Salah Paham")
+   ========================================================================== */
+
+/* 1. Power Dynamics / Sub-Role Selector */
+.subrole-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.subrole-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.subrole-pills-container {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.subrole-pill-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.subrole-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+}
+
+.subrole-pill-btn.active {
+  background: rgba(99, 102, 241, 0.22);
+  border-color: rgba(99, 102, 241, 0.55);
+  color: #e0e7ff;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+}
+
+/* 2. PII Auto-Redact Button */
+.btn-redact-pii {
+  background: rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  color: #fef3c7;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.38rem 0.85rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-redact-pii:hover {
+  background: rgba(245, 158, 11, 0.4);
+  color: #fff;
+}
+
+/* 3. Editor Utility Actions (Paste, Undo, WhatsApp, Email) */
+.editor-actions {
+  flex-wrap: wrap;
+}
+
+.btn-utility-action {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.32rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-utility-action:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: var(--border-active);
+}
+
+.btn-utility-action.hidden {
+  display: none;
+}
+
+.btn-wa-action {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+.btn-wa-action:hover {
+  background: rgba(16, 185, 129, 0.25);
+  color: #fff;
+}
+
+/* 4. Word-by-Word Visual Diff View */
+.rewrite-text-content.hidden,
+.rewrite-diff-box.hidden {
+  display: none;
+}
+
+.rewrite-diff-box {
+  font-size: 0.86rem;
+  line-height: 1.75;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #6366f1;
+}
+
+.diff-token {
+  display: inline;
+  padding: 1px 3px;
+  border-radius: 4px;
+}
+
+.diff-removed {
+  background: rgba(239, 68, 68, 0.22);
+  color: #fca5a5;
+  text-decoration: line-through;
+  margin-right: 3px;
+}
+
+.diff-added {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.diff-same {
+  color: var(--text-primary);
+}
+
+/* 5. Smart Phrase Autocomplete Strip & Quick Emoji Row */
+.sim-phrase-strip {
+  background: #141418;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 5px 8px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.sim-phrase-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.sim-phrase-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d4d4d8;
+  font-family: inherit;
+  font-size: 0.66rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+.sim-phrase-chip:hover {
+  background: rgba(99, 102, 241, 0.28);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #fff;
+}
+
+.kb-emoji-row .kb-key-emoji {
+  height: 30px;
+  font-size: 0.9rem;
+  background: #18181c;
+  max-width: 42px;
+}
+
+/* 6. Pre-Send Alarm Interception Modal */
+.alarm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  animation: fade-in 180ms ease-out;
+}
+
+.alarm-modal-overlay.hidden {
+  display: none;
+}
+
+.alarm-modal-card {
+  width: 100%;
+  max-width: 540px;
+  background: #141419;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(239, 68, 68, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.alarm-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.alarm-siren-icon {
+  font-size: 2rem;
+  animation: pulse-ring 1s infinite;
+}
+
+.alarm-modal-header h3 {
+  font-size: 1.05rem;
+  color: #fecaca;
+}
+
+.alarm-risk-subtitle {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f87171;
+}
+
+.alarm-impact-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.alarm-comparison-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.alarm-draft-bad {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: #fecaca;
+}
+
+.alarm-draft-good {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: #d1fae5;
+}
+
+.alarm-box-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  opacity: 0.9;
+}
+
+.alarm-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.btn-alarm-primary {
+  background: var(--emerald-green);
+  border: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-alarm-primary:hover {
+  background: #059669;
+}
+
+.btn-alarm-danger {
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.btn-alarm-danger:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
+}
+
+
+/* ==========================================================================
+   TONEGUARD v5.0 CLOUD RUN & STATELESS AUTO-BOT MODERATOR STYLES
+   ========================================================================== */
+
+.bot-automod-bar {
+  background: rgba(15, 23, 42, 0.92);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.bot-automod-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+}
+
+.bot-automod-icon {
+  font-size: 0.85rem;
+}
+
+.bot-automod-title {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.bot-automod-status {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #34d399;
+}
+
+.bot-automod-status.off {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+}
+
+.btn-sim-bot-test {
+  background: rgba(56, 189, 248, 0.16);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #7dd3fc;
+  font-family: inherit;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-sim-bot-test:hover {
+  background: rgba(56, 189, 248, 0.32);
+  color: #fff;
+}
+
+.msg-member-harsh {
+  align-self: flex-start;
+  background: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(239, 68, 68, 0.45) !important;
+  color: #fecaca !important;
+}
+
+.msg-bot-intervention {
+  align-self: stretch;
+  max-width: 96% !important;
+  margin: 4px auto;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 27, 75, 0.92)) !important;
+  border: 1px solid rgba(56, 189, 248, 0.5) !important;
+  border-left: 3px solid #38bdf8 !important;
+  color: #e0f2fe !important;
+  font-size: 0.72rem !important;
+  padding: 0.6rem 0.75rem !important;
+  border-radius: 8px !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.bot-intervention-header {
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+}
+
+.bot-intervention-quote {
+  margin-top: 6px;
+  padding: 5px 8px;
+  background: rgba(16, 185, 129, 0.14);
+  border-left: 2px solid #10b981;
+  border-radius: 4px;
+  color: #a7f3d0;
+  font-style: italic;
+}
+
+
+/* ==========================================================================
+   TONEGUARD v5.1 PRIVACY HARDENING:
+   1. Auto-Shredder Idle Memory Countdown Badge
+   2. Privacy Blur Shield (Shoulder-Surfing Protection & Tab-Switch Blur)
+   ========================================================================== */
+
+.auto-shred-pill {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.45rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #a1a1aa;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-variant-numeric: tabular-nums;
+  transition: all var(--transition-fast);
+}
+
+.auto-shred-pill.shred-active-warning {
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.22);
+  border-color: rgba(239, 68, 68, 0.55);
+  animation: pulse-ring 1s infinite;
+}
+
+.btn-secondary.active-blur {
+  background: rgba(99, 102, 241, 0.24);
+  border-color: rgba(99, 102, 241, 0.6);
+  color: #e0e7ff;
+}
+
+body.privacy-blur-active .main-textarea,
+body.privacy-blur-active .highlighted-text-view,
+body.privacy-blur-active .rewrite-card p,
+body.privacy-blur-active .rewrite-diff-box,
+body.privacy-blur-active .chat-messages-area,
+body.privacy-blur-active .incoming-context-input {
+  filter: blur(9px);
+  transition: filter 200ms ease;
+}
+
+/* Temporarily unblur the specific element the user hovers or focuses so they can still work securely */
+body.privacy-blur-active .main-textarea:hover,
+body.privacy-blur-active .main-textarea:focus,
+body.privacy-blur-active .highlighted-text-view:hover,
+body.privacy-blur-active .rewrite-card:hover p,
+body.privacy-blur-active .rewrite-card:hover .rewrite-diff-box,
+body.privacy-blur-active .chat-messages-area:hover,
+body.privacy-blur-active .incoming-context-input:hover,
+body.privacy-blur-active .incoming-context-input:focus {
+  filter: blur(0);
+}
